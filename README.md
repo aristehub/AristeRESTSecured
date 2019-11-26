@@ -8,4 +8,4 @@ This is a Spring RESTful API, to buyild and run you will need:
   - Any IDE (Eclipse or Intellij).
   - Database MySQL, the sql testing file can be found on the repo MySQL testing.
   
-Get the repo, imported to your IDE and Run it as java Application.
+Get the repo, import it to your IDE and Run it as java Application.
