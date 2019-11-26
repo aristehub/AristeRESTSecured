@@ -1,6 +1,6 @@
 # Ariste REST Secured
 
-This is a Spring RESTful API, to buyild and run you will need:
+This is a Spring RESTful API, to build and run you will need:
 
   - Java JDK 9 or higher.
   - Apache Tomcat 9.0 or higher
