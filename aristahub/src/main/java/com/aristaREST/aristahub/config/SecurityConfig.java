@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import com.aristaREST.aristahub.services.UserService;
 
 @Configuration
 @EnableWebSecurity
@@ -21,15 +22,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 	 * 					MEMBER VARIABLES
 	 * -------------------------------------------------------
 	 */
-	private UserPrincipalDetailsService userPS;
+	@Autowired
+	private CustomAuthenticationSuccessHandler userPS;
+	
+	// add a reference to our security data source
+    @Autowired
+    private UserService userService;
 	
 	/*
 	 * -------------------------------------------------------	
 	 * 					CONSTRUCTOR
 	 * -------------------------------------------------------
 	 */
-	@Autowired
-	public SecurityConfig(UserPrincipalDetailsService ups)
+	
+	public SecurityConfig(CustomAuthenticationSuccessHandler ups)
 	{
 		this.userPS = ups;
 	}
@@ -60,25 +66,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 			.antMatchers("/api//product/{product_id}").hasAuthority("ACCESS_TEST2")
 			.antMatchers("/api/public/users").hasRole("ADMIN")
 			.and()
-			.formLogin().loginProcessingUrl("/signin").loginPage("/login").permitAll().usernameParameter("txtUsername").passwordParameter("txtPassword")
+			.formLogin().loginProcessingUrl("/signin").loginPage("/login").successHandler(userPS).permitAll()
 			.and()
-			.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
+			.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login").permitAll()
 			.and()
-			.rememberMe().tokenValiditySeconds(2592000).key("cs697@FALL!").rememberMeParameter("checkRememberMe");
+			.rememberMe().tokenValiditySeconds(2592000).key("cs697@FALL!").rememberMeParameter("checkRememberMe")
+			.and()
+			.exceptionHandling().accessDeniedPage("/access-denied");;
 	}
 	//get bean for authentication provider of the DataBase, password encoder of the query
 	@Bean
-	DaoAuthenticationProvider authProvider() 
+	public DaoAuthenticationProvider authProvider() 
 	{
+		//get authentication provider object
 		DaoAuthenticationProvider daoAuth = new DaoAuthenticationProvider();
-		daoAuth.setPasswordEncoder(passwordEncoder());
-		daoAuth.setUserDetailsService(this.userPS);
-		
+		daoAuth.setPasswordEncoder(passwordEncoder());  //set the password encoder - bcrypt
+		daoAuth.setUserDetailsService(userService); //service set..
 		return daoAuth;
 	}
 	//Password encoder...
 	@Bean
-	PasswordEncoder passwordEncoder()
+	public PasswordEncoder passwordEncoder()
 	{
 		//type of encoder...
 		return new BCryptPasswordEncoder();

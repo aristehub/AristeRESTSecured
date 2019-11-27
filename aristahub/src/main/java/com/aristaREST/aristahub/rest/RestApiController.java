@@ -1,20 +1,16 @@
 package com.aristaREST.aristahub.rest;
 
-import java.util.List;
+
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.aristaREST.aristahub.dao.UserDAO;
-import com.aristaREST.aristahub.entities.User;
 
 @RestController
 @RequestMapping("api/public")
 public class RestApiController 
 {
-	private UserDAO userdao;
-
     public RestApiController() {}
 
     @GetMapping("test1")
@@ -26,9 +22,9 @@ public class RestApiController
     public String test2(){
         return "API Test 2";
     }
-    @GetMapping("users")
-    public List<User> users()
+    //@GetMapping("users")
+    //public List<User> users()
     {
-    	return this.userdao.findAll();
+    //	return this.userdao.findAll();
     }
 }

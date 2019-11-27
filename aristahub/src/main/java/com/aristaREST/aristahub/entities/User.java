@@ -25,6 +25,12 @@ public class User
 	@Column(name="id")
 	private long user_id;
 	
+	@Column(name = "first_name", nullable = false)
+	private String firstName;
+	
+	@Column(name = "last_name", nullable = false)
+	private String lastName;
+	
 	@Column(name = "username", nullable = false)
 	private String username;
 	
@@ -50,11 +56,13 @@ public class User
 	 * -------------------------------------------------------
 	 */
 	//HiberNate requires default
-	protected User() {}
+	public User() {}
 	
-	public User(long id, String username, String password, String email, String date, String roles, String permisions)
+	public User(long id, String name, String last, String username, String password, String email, String date, String roles, String permisions)
 	{
 		this.user_id = id;
+		this.firstName = name;
+		this.lastName = last;
 		this.username = username;
 	 	this.password = password;
 	 	this.email = email;
@@ -69,9 +77,20 @@ public class User
 	 * 					SETTERS AND GETTERS TO_STRING
 	 * -------------------------------------------------------
 	 */
+	public long getUser_id() { return user_id;	}
 
+	public void setUser_id(long user_id) { this.user_id = user_id; }
 
-	
+	public String getFirstName() { return firstName; }
+
+	public void setFirstName(String firstName) { this.firstName = firstName; }
+
+	public String getLastName() { return lastName; }
+
+	public void setLastName(String lastName) { this.lastName = lastName; }
+
+	public void setDate_created(String date_created) { this.date_created = date_created; }
+
 	public long getId()  { return user_id; }
 
 	public void setId(long id) { this.user_id = id; }
@@ -89,6 +108,8 @@ public class User
 	public void setActive(int active) { this.active = active; }
 	
 	public String getEmail() { return email; }
+	
+	public void setEmail(String em) { this.email = em; }
 	
 	public String getDate_created() { return date_created; }
 

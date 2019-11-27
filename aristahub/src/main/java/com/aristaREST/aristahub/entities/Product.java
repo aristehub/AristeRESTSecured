@@ -44,9 +44,10 @@ public class Product
 		summary = summary_;
 		posted = date;
 	}
+	
 	/*
 	 * -------------------------------------------------------	
-	 * 					SETTERS AND GETTERS TO_STRING
+	 * 			   SETTERS AND GETTERS TO_STRING
 	 * -------------------------------------------------------
 	 */
 	public int getProduct_id() {
@@ -91,6 +92,4 @@ public class Product
 		return "Product [product_id=" + product_id + ", product_name=" + product_name + ", price=" + price
 				+ ", product_reminding=" + product_reminding + ", summary=" + summary + ", posted=" + posted + "]";
 	}
-	
-	
 }

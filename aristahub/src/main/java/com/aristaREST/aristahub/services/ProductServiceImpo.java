@@ -30,6 +30,7 @@ public class ProductServiceImpo implements ProductService
 	{
 		productDAO = typeDAO;
 	}
+	
 	/*
 	 * -------------------------------------------------------	
 	 * 					MEMBER METHODS

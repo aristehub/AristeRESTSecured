@@ -39,6 +39,7 @@ public class ProductRestController
 	{
 		productServ = ps;
 	}
+	
 	/*
 	 * -------------------------------------------------------	
 	 * 					MEMBER METHODS
