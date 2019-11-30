@@ -1,8 +1,10 @@
 package com.aristaREST.aristahub.services;
 
 
+import com.aristaREST.aristahub.dao.RoleDAO;
 import com.aristaREST.aristahub.dao.UserDAO;
 import com.aristaREST.aristahub.entities.User;
+import com.aristaREST.aristahub.entities.Role;
 import com.aristaREST.aristahub.entities.CrmUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -13,8 +15,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
+//import java.util.Date;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +31,8 @@ public class UserServiceImpl implements UserService {
 	// need to inject user DAO
 	@Autowired
 	private UserDAO userDao;
+	@Autowired
+	private RoleDAO roleDao;
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
@@ -56,11 +61,11 @@ public class UserServiceImpl implements UserService {
 		user.setLastName(crmUser.getLastName());
 		user.setEmail(crmUser.getEmail());
 		//get current time
-		Date time = new Date();
+		//Date time = new Date();
 		//add to string method...
-		user.setDate_created(time.toString());
+		//user.setDate_created(time.toString());
 		//set roles and permissions -> for developing purposes I will set all to USER
-		user.setRoles("USER");
+		user.setRoles(Arrays.asList(roleDao.findRoleByName("ROLE_USER")));
 		 // save user in the database
 		userDao.save(user);
 	}
@@ -78,12 +83,12 @@ public class UserServiceImpl implements UserService {
 		}
 		//return mapped user with roles
 		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-				mapRolesToAuthorities(user.getRoleList()));
+				mapRolesToAuthorities(user.getRoles()));
 	}
 
-	private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<String> roles) 
+	private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) 
 	{
-		//extract roles
-		return roles.stream().map(role -> new SimpleGrantedAuthority(role)).collect(Collectors.toList());
+		//extract roles....
+		return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
 	}
 }

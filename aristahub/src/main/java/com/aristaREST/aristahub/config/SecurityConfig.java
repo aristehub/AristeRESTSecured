@@ -56,23 +56,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
 	@Override
 	protected void configure(HttpSecurity https) throws Exception
 	{
-		https
-			.authorizeRequests()
-			.antMatchers("/index.html").permitAll()
-			.antMatchers("/profile/**").authenticated()
-			.antMatchers("/admin/**").hasRole("Admin")
-			.antMatchers("/management/**").hasAnyRole("ADMIN", "MANAGER")
-			.antMatchers("/api/products").hasAuthority("ACCESS_TEST1")
-			.antMatchers("/api//product/{product_id}").hasAuthority("ACCESS_TEST2")
-			.antMatchers("/api/public/users").hasRole("ADMIN")
-			.and()
-			.formLogin().loginProcessingUrl("/signin").loginPage("/login").successHandler(userPS).permitAll()
-			.and()
-			.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login").permitAll()
-			.and()
-			.rememberMe().tokenValiditySeconds(2592000).key("cs697@FALL!").rememberMeParameter("checkRememberMe")
-			.and()
-			.exceptionHandling().accessDeniedPage("/access-denied");;
+		https.authorizeRequests()
+		.antMatchers("/index.html").permitAll()
+		.antMatchers("/profile/**").authenticated()
+		.antMatchers("/admin/**").hasRole("Admin")
+		.antMatchers("/management/**").hasAnyRole("ADMIN", "MANAGER")
+		.antMatchers("/api/products").permitAll()
+		.antMatchers("/api//product/{product_id}").hasRole("USER")
+		.and()
+		.formLogin().loginProcessingUrl("/signin").loginPage("/login").successHandler(userPS).permitAll()
+		.and()
+		.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login").permitAll()
+		.and()
+		.rememberMe().tokenValiditySeconds(2592000).key("cs697@FALL!").rememberMeParameter("checkRememberMe")
+		.and()
+		.exceptionHandling().accessDeniedPage("/access-denied");
 	}
 	//get bean for authentication provider of the DataBase, password encoder of the query
 	@Bean
